@@ -12,40 +12,40 @@ const FooterContent = () => {
   return (
     <Box sx={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between' }}>
       <Typography sx={{ mr: 2 }}>
-        {`© ${new Date().getFullYear()}, Made with `}
-        <Box component='span' sx={{ color: 'error.main' }}>
-          ❤️
-        </Box>
+        {`© ${new Date().getFullYear()},`}
+        {/*<Box component='span' sx={{ color: 'error.main' }}>*/}
+        {/*  ❤️*/}
+        {/*</Box>*/}
         {` by `}
-        <Link target='_blank' href='https://themeselection.com/'>
-          ThemeSelection
+        <Link target='_blank' href='https://github.com/senior-project-railways'>
+          senior-project-railways
         </Link>
       </Typography>
-      {hidden ? null : (
-        <Box sx={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', '& :not(:last-child)': { mr: 4 } }}>
-          <Link
-            target='_blank'
-            href='https://github.com/themeselection/materio-mui-react-nextjs-admin-template-free/blob/main/LICENSE'
-          >
-            MIT License
-          </Link>
-          <Link target='_blank' href='https://themeselection.com/'>
-            More Themes
-          </Link>
-          <Link
-            target='_blank'
-            href='https://github.com/themeselection/materio-mui-react-nextjs-admin-template-free/blob/main/README.md'
-          >
-            Documentation
-          </Link>
-          <Link
-            target='_blank'
-            href='https://github.com/themeselection/materio-mui-react-nextjs-admin-template-free/issues'
-          >
-            Support
-          </Link>
-        </Box>
-      )}
+      {/*{hidden ? null : (*/}
+      {/*  <Box sx={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', '& :not(:last-child)': { mr: 4 } }}>*/}
+      {/*    <Link*/}
+      {/*      target='_blank'*/}
+      {/*      href='https://github.com/themeselection/materio-mui-react-nextjs-admin-template-free/blob/main/LICENSE'*/}
+      {/*    >*/}
+      {/*      MIT License*/}
+      {/*    </Link>*/}
+      {/*    <Link target='_blank' href='https://themeselection.com/'>*/}
+      {/*      More Themes*/}
+      {/*    </Link>*/}
+      {/*    <Link*/}
+      {/*      target='_blank'*/}
+      {/*      href='https://github.com/themeselection/materio-mui-react-nextjs-admin-template-free/blob/main/README.md'*/}
+      {/*    >*/}
+      {/*      Documentation*/}
+      {/*    </Link>*/}
+      {/*    <Link*/}
+      {/*      target='_blank'*/}
+      {/*      href='https://github.com/themeselection/materio-mui-react-nextjs-admin-template-free/issues'*/}
+      {/*    >*/}
+      {/*      Support*/}
+      {/*    </Link>*/}
+      {/*  </Box>*/}
+      {/*)}*/}
     </Box>
   )
 }
