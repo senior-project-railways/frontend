@@ -15,6 +15,11 @@
     "type": "git",
     "url": "https://github.com/themeselection/materio-mui-react-nextjs-admin-template-free.git"
   },
+  "browser": {
+    "fs": false,
+    "path": false,
+    "os": false
+  },  
   "homepage": "https://themeselection.com/products/materio-free-mui-react-nextjs-admin-template/",
   "keywords": [
     "react",
@@ -51,8 +56,12 @@
     "@mui/lab": "^5.0.0-alpha.70",
     "@mui/material": "^5.4.3",
     "@popperjs/core": "^2.11.2",
+    "@reduxjs/toolkit": "^1.9.1",
     "apexcharts-clevision": "3.28.5",
+    "axios": "^1.2.1",
+    "axios-auth-refresh": "^3.3.4",
     "clsx": "^1.1.1",
+    "formik": "^2.2.9",
     "mdi-material-ui": "^7.1.0",
     "next": "12.0.4",
     "nprogress": "^0.2.0",
@@ -61,7 +70,13 @@
     "react-datepicker": "^4.5.0",
     "react-dom": "17.0.2",
     "react-perfect-scrollbar": "^1.5.8",
-    "react-popper": "^2.2.5"
+    "react-popper": "^2.2.5",
+    "react-redux": "^8.0.5",
+    "react-router-dom": "^6.5.0",
+    "redux": "^4.2.0",
+    "redux-persist": "^6.0.0",
+    "swr": "^2.0.0",
+    "yup": "^0.32.11"
   },
   "devDependencies": {
     "@types/node": "16.11.11",
@@ -70,6 +85,7 @@
     "@types/react-datepicker": "^4.3.2",
     "@typescript-eslint/eslint-plugin": "^5.6.0",
     "@typescript-eslint/parser": "^5.11.0",
+    "dotenv": "^16.0.3",
     "eslint": "^7.32.0",
     "eslint-config-next": "12.0.4",
     "eslint-config-prettier": "^8.3.0",

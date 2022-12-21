@@ -1,5 +1,11 @@
 // ** React Imports
 import { ChangeEvent, MouseEvent, ReactNode, useState } from 'react'
+import * as Yup from "yup";
+import { useFormik } from "formik";
+import { useDispatch } from "react-redux";
+import axios from "axios";
+import {useNavigate} from "react-router-dom";
+import authSlice from "../../../store/slices/auth";
 
 // ** Next Imports
 import Link from 'next/link'
@@ -41,7 +47,8 @@ import FooterIllustrationsV1 from 'src/views/pages/auth/FooterIllustration'
 
 interface State {
   password: string
-  showPassword: boolean
+  showPassword: boolean,
+  email: string
 }
 
 // ** Styled Components
@@ -63,27 +70,68 @@ const FormControlLabel = styled(MuiFormControlLabel)<FormControlLabelProps>(({ t
 }))
 
 const LoginPage = () => {
-  // ** State
-  const [values, setValues] = useState<State>({
-    password: '',
-    showPassword: false
-  })
+  const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState(false);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-  // ** Hook
+  const handleLogin = (email: string, password: string) => {
+    axios
+      // .post(`/${process.env.REACT_APP_API_URL}/auth/login/`, { email, password })
+      .post('http://127.0.0.1:8000/api/auth/login/', { email, password })
+      .then((res) => {
+        dispatch(
+          authSlice.actions.setAuthTokens({
+            token: res.data.access,
+            refreshToken: res.data.refresh,
+          })
+        );
+        dispatch(authSlice.actions.setAccount(res.data.user));
+        setLoading(false);
+        navigate('/')
+      })
+      .catch((err) => {
+        setMessage(err.response.data.detail.toString());
+      });
+  };
+
+  const formik = useFormik({
+    initialValues: {
+      email: "",
+      password: "",
+    },
+    onSubmit: (values) => {
+      setLoading(true);
+      handleLogin(values.email, values.password);
+    },
+    validationSchema: Yup.object({
+      email: Yup.string().trim().required("Email is required"),
+      password: Yup.string().trim().required("Password is required"),
+    }),
+  });
+
+  // // ** State
+  // const [values, setValues] = useState<State>({
+  //   password: '',
+  //   showPassword:false,
+  //   email:''
+  // })
+
+  // // ** Hook
   const theme = useTheme()
-  const router = useRouter()
+  // const router = useRouter()
 
-  const handleChange = (prop: keyof State) => (event: ChangeEvent<HTMLInputElement>) => {
-    setValues({ ...values, [prop]: event.target.value })
-  }
+  // const handleChange = (prop: keyof State) => (event: ChangeEvent<HTMLInputElement>) => {
+  //   setValues({ ...values, [prop]: event.target.value })
+  // }
 
-  const handleClickShowPassword = () => {
-    setValues({ ...values, showPassword: !values.showPassword })
-  }
+  // const handleClickShowPassword = () => {
+  //   setValues({ ...values, showPassword: !values.showPassword })
+  // }
 
-  const handleMouseDownPassword = (event: MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault()
-  }
+  // const handleMouseDownPassword = (event: MouseEvent<HTMLButtonElement>) => {
+  //   event.preventDefault()
+  // }
 
   return (
     <Box className='content-center'>
@@ -168,30 +216,55 @@ const LoginPage = () => {
             </Typography>
             <Typography variant='body2'>Please sign-in to your account</Typography>
           </Box>
-          <form noValidate autoComplete='off' onSubmit={e => e.preventDefault()}>
-            <TextField autoFocus fullWidth id='email' label='Email' sx={{ marginBottom: 4 }} />
+          <form onSubmit={formik.handleSubmit}>
+            <TextField 
+              autoFocus 
+              required={true} 
+              fullWidth 
+              id='email' 
+              label='Email' 
+              sx={{ marginBottom: 4 }}
+              type="email"
+              placeholder="Email"
+              name="email"
+              value={formik.values.email}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+            />
+            {formik.errors.email ? <div>{formik.errors.email} </div> : null}
             <FormControl fullWidth>
               <InputLabel htmlFor='auth-login-password'>Password</InputLabel>
               <OutlinedInput
                 label='Password'
-                value={values.password}
+                // value={values.password}
                 id='auth-login-password'
-                onChange={handleChange('password')}
-                type={values.showPassword ? 'text' : 'password'}
-                endAdornment={
-                  <InputAdornment position='end'>
-                    <IconButton
-                      edge='end'
-                      onClick={handleClickShowPassword}
-                      onMouseDown={handleMouseDownPassword}
-                      aria-label='toggle password visibility'
-                    >
-                      {values.showPassword ? <EyeOutline /> : <EyeOffOutline />}
-                    </IconButton>
-                  </InputAdornment>
-                }
+                // onChange={handleChange('password')}
+                type="password"
+                // type={values.showPassword ? 'text' : 'password'}
+                name="password"
+                value={formik.values.password}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                // endAdornment={
+                //   <InputAdornment position='end'>
+                //     <IconButton
+                //       edge='end'
+                //       onClick={handleClickShowPassword}
+                //       onMouseDown={handleMouseDownPassword}
+                //       aria-label='toggle password visibility'
+                //     >
+                //       {values.showPassword ? <EyeOutline /> : <EyeOffOutline />}
+                //     </IconButton>
+                //   </InputAdornment>
+                // }
               />
+              {formik.errors.password ? (
+              <div>{formik.errors.password} </div>
+            ) : null}
             </FormControl>
+            <div className="text-danger text-center my-2" hidden={false}>
+              {message}
+            </div>
             <Box
               sx={{ mb: 4, display: 'flex', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'space-between' }}
             >
@@ -205,7 +278,8 @@ const LoginPage = () => {
               size='large'
               variant='contained'
               sx={{ marginBottom: 7 }}
-              onClick={() => router.push('/')}
+              type="submit"
+              disabled={loading}
             >
               Login
             </Button>
